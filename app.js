@@ -27,8 +27,6 @@ app.use(function(req, res, next) {
   //move on
     next();
   }
-
-  next();
 });
 
 // For POST requests
