@@ -12,7 +12,6 @@ router.get('/', function(req, res, next) {
 
 /* Create Room */
 router.get('/createroom', function(req, res, next) {
-  console.log('auth_tok: ', req.query.auth_tok);
 
   // Check if room code already exists
   room_code = generateRoomCode();
@@ -20,9 +19,7 @@ router.get('/createroom', function(req, res, next) {
     room_code = generateRoomCode();
   }
 
-  console.log('room_code: ', room_code);
   rooms[room_code] = new Room(req.query.auth_tok);
-  console.log('rooms', rooms);
   res.send({room: room_code});
 
 });
@@ -33,15 +30,10 @@ router.get('/getqueue', function (req, res, next) {
   var queue;
 
   if (room_code in rooms) {
-    console.log("------------------------------------");
-    console.log(rooms);
-    console.log(rooms[room_code].getQueue());
-    console.log("------------------------------------");
     queue = rooms[room_code].getQueue();
     res.json({list: queue});
   } else {
     res.sendStatus(404);
-    console.log("4040404040044")
   }
 });
 
@@ -60,6 +52,9 @@ router.post('/updatequeue', function (req, res, next) {
 router.post('/addsong', function (req, res, next) {
   var song      = req.body.song;
   var room_code = req.body.room;
+
+  console.log("song: ", song);
+  console.log("room code: ", room_code);
 
   rooms[room_code].addToQueue(song);
 
@@ -102,15 +97,15 @@ function generateRoomCode(len = 4) {
 }
 
 function spotifySearchRequest(url, callback, auth_tok) {
+
+  //https://stackoverflow.com/questions/247483/http-get-request-in-javascript
   // Handle async request to Spotify Servers
   var search_results = new XMLHttpRequest();
   search_results.onreadystatechange = function() { 
   if (search_results.readyState == 4 && search_results.status == 200)
       callback(search_results.responseText);
-      console.log(search_results.responseText);
   }
 
-  console.log("made it 2");
   search_results.open("GET", url, true);
   search_results.setRequestHeader('Accept', 'application/json');
   search_results.setRequestHeader('Content-Type', 'application/json');
