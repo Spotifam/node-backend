@@ -32,7 +32,7 @@ router.get('/getqueue', function (req, res, next) {
   var room_code = req.query.room_code;
   var queue;
 
-  if (room_code in room) {
+  if (room_code in rooms) {
     queue = rooms[room_code].getQueue();
     res.send({list: queue});
   } else {
