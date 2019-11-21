@@ -53,7 +53,6 @@ router.post('/addsong', function (req, res, next) {
   var song      = req.body.song;
   var room_code = req.body.room;
 
-  console.log(req);
   console.log("song: ", song);
   console.log("room code: ", room_code);
 
