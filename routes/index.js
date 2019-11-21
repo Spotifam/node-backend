@@ -31,14 +31,14 @@ router.get('/createroom', function(req, res, next) {
 router.get('/getqueue', function (req, res, next) {
   var room_code = req.query.room;
   var queue;
-  console.log(rooms);
+
   if (rooms.hasOwnProperty(room_code)) {
     queue = rooms[room_code].getQueue();
     res.send({list: queue});
   } else {
     console.log("---------------------------------------------------------------")
     console.log(rooms);
-    console.log(room_code in rooms);
+    console.log(room_code);
     console.log("---------------------------------------------------------------")
     res.sendStatus(404);
   }
