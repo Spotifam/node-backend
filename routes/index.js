@@ -38,7 +38,7 @@ router.get('/getqueue', function (req, res, next) {
     console.log(rooms[room_code].getQueue());
     console.log("------------------------------------");
     queue = rooms[room_code].getQueue();
-    res.send({list: queue});
+    res.json({list: queue});
   } else {
     res.sendStatus(404);
     console.log("4040404040044")
