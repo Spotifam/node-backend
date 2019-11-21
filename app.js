@@ -22,8 +22,7 @@ app.use(function(req, res, next) {
 // For POST requests
 var bodyParser = require("body-parser");
 app.use(express.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: false }));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
