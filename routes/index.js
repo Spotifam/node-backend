@@ -56,9 +56,12 @@ router.post('/addsong', function (req, res, next) {
   console.log("song: ", song);
   console.log("room code: ", room_code);
 
-  rooms[room_code].addToQueue(song);
-
-  res.sendStatus(200);
+  if (room_code in rooms) {
+    rooms[room_code].addToQueue(song);
+    res.send({song_added:true});
+  } else {
+    res.send({song_added: false});
+  }
 
 });
 
