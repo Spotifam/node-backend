@@ -118,20 +118,17 @@ function spotifySearchRequest(url, callback, auth_tok) {
 }
 module.exports = function (io) {
 
-  let count = 0;
   io.on('connection', function (socket) {
       
-      count++;
-      console.log('User has connected', count);
+      let currRoom = "";
 
       socket.on('create room', (data) => {
+        currRoom = data.room_code;
         socket.join(data.room_code);
-        console.log(data.room_code);
       });
 
       socket.on('disconnect', () => {
-        count--;
-        console.log('User disconnected', count);
+        delete rooms[currRoom];
       });
   });
 
