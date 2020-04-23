@@ -2,6 +2,7 @@ class Room {
     constructor(auth_token) {
       this.queue = [];
       this.auth_token = auth_token;
+      this.socket = '';
     }
 
     updateQueue (queue) {
@@ -18,6 +19,10 @@ class Room {
 
     getAuthToken() {
         return this.auth_token;
+    }
+
+    setSocket(_socket) {
+        this.socket = _socket;
     }
 }
 

@@ -3,7 +3,7 @@ var Room = require('./room.js');
 var router = express.Router();
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
-rooms = {};
+let rooms = {};
 
 /* Server Homepage */
 router.get('/', function(req, res, next) {
@@ -12,7 +12,6 @@ router.get('/', function(req, res, next) {
 
 /* Create Room */
 router.get('/createroom', function(req, res, next) {
-
   // Check if room code already exists
   room_code = generateRoomCode();
   while (room_code in rooms) {
@@ -58,6 +57,7 @@ router.post('/addsong', function (req, res, next) {
 
   if (room_code in rooms) {
     rooms[room_code].addToQueue(song);
+    req.app.io.to(room_code).emit('update queue', { queue : rooms[room_code].getQueue()});
     res.send({song_added:true});
   } else {
     res.send({song_added: false});
@@ -116,5 +116,24 @@ function spotifySearchRequest(url, callback, auth_tok) {
   search_results.setRequestHeader('Authorization', 'Bearer ' + auth_tok);
   search_results.send(null);
 }
+module.exports = function (io) {
 
-module.exports = router;
+  let count = 0;
+  io.on('connection', function (socket) {
+      
+      count++;
+      console.log('User has connected', count);
+
+      socket.on('create room', (data) => {
+        socket.join(data.room_code);
+        console.log(data.room_code);
+      });
+
+      socket.on('disconnect', () => {
+        count--;
+        console.log('User disconnected', count);
+      });
+  });
+
+  return router;
+};
