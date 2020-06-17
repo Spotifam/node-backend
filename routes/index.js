@@ -210,10 +210,6 @@ module.exports = function (io) {
         currRoom = data.room_code; // keep track of the room's socket
         socket.join(data.room_code);
       });
-
-      socket.on('disconnect', () => {
-        delete rooms[currRoom];
-      });
   });
 
   return router;
